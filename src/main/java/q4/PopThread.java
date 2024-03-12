@@ -3,7 +3,6 @@ package q4;
 import java.io.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static java.lang.System.*;
 
 public class PopThread implements Runnable {
     private static final Object lock = new Object();
@@ -33,16 +32,14 @@ public class PopThread implements Runnable {
             if (fileLabel != null) {
                 synchronized (lock) {
                     int count = Integer.parseInt(fileLabel.split("/")[0]);
-                    System.out.println("count: " + count);
                     while (fileCounter.get() != count) {
                         lock.wait(); // Wait for the correct order
                     }
-                    String prefix = "/Users/mohammadrababah/IdeaProjects/Q3/src/main/java/q4/";
+                    String prefix = "";
 
                     BufferedWriter writer = new BufferedWriter(new FileWriter(prefix + "result.txt", true));
                     reader = new BufferedReader(new FileReader(filename));
                     while ((line = reader.readLine()) != null) {
-                        System.out.println("Writing: " + line);
                         writer.write(line);
                         writer.newLine();
                     }
