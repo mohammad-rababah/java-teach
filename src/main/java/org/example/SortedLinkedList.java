@@ -73,7 +73,7 @@ public class SortedLinkedList implements SortedList {
             return head;
         }
         Node current = head;
-        while (head.getNext() != null) {
+        while (current.getNext() != null) {
             current = current.getNext();
         }
 
