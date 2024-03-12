@@ -7,7 +7,8 @@ public class Main {
         list.add("Alice");
         list.add("David");
         list.add("Charlie");
-        list.removeFirst();
+        list.remove("Charlie");
+        list.orderDescending();
         list.print();
     }
 

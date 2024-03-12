@@ -176,7 +176,7 @@ public class SortedLinkedList implements SortedList {
     public boolean remove(String string) {
         Node current = head;
         while (current != null) {
-            if (current.getString().toLowerCase().equals(string.toLowerCase())) {
+            if (current.getString().equalsIgnoreCase(string)) {
                 if (current.getPrev() != null) {
                     current.getPrev().setNext(current.getNext());
                 } else {
