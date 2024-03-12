@@ -2,7 +2,7 @@ package org.example;
 
 public class SortedLinkedList implements SortedList {
     private Node head;
-
+    private boolean isAscending = true;
     SortedLinkedList() {
         head = null;
     }
@@ -32,16 +32,22 @@ public class SortedLinkedList implements SortedList {
 
     @Override
     public void add(Node node) {
+        String nodeName = node.getString().toLowerCase();
         if (head == null) {
             head = node;
-        } else if (head.getString().compareTo(node.getString()) > 0) {
+        } else if (head.getString().toLowerCase().compareTo(nodeName) > 0) {
             node.setNext(head);
             head.setPrev(node);
             head = node;
+        } else if (head.getString().toLowerCase().compareTo(nodeName) == 0) {
+            return;
         } else {
             Node current = head;
-            while (current.getNext() != null && current.getNext().getString().compareTo(node.getString()) < 0) {
+            while (current.getNext() != null && current.getNext().getString().toLowerCase().compareTo(nodeName) < 0) {
                 current = current.getNext();
+            }
+            if (current.getNext() != null && current.getNext().getString().toLowerCase().compareTo(nodeName) == 0) {
+                return;
             }
 
             node.setNext(current.getNext());
@@ -96,6 +102,13 @@ public class SortedLinkedList implements SortedList {
 
     @Override
     public boolean isPresent(String string) {
+        Node current = head;
+        while (current != null) {
+            if (current.getString().equalsIgnoreCase(string)) {
+                return true;
+            }
+            current = current.getNext();
+        }
         return false;
     }
 
@@ -116,26 +129,109 @@ public class SortedLinkedList implements SortedList {
 
     @Override
     public boolean removeLast() {
-        return false;
+        if (head == null) {
+            return false;
+        }
+        if (head.getNext() == null) {
+            head = null;
+            return true;
+        }
+        Node current = head;
+        while (current.getNext() != null) {
+            current = current.getNext();
+        }
+        Node prevNode = current.getPrev();
+        prevNode.setNext(null);
+        return true;
+
     }
 
     @Override
     public boolean remove(int index) {
+        if (index >= size()) {
+            return false;
+        }
+        if (index == 0) {
+            return removeFirst();
+        }
+        int counter = 1;
+        Node current = head;
+        while (current.getNext() != null) {
+            current = current.getNext();
+            if (counter == index) {
+                Node prevNode = current.getPrev();
+                Node nextNode = current.getNext();
+                prevNode.setNext(nextNode);
+                if (nextNode != null) {
+                    nextNode.setPrev(prevNode);
+                }
+                return true;
+            }
+            counter++;
+        }
         return false;
     }
 
     @Override
     public boolean remove(String string) {
+        Node current = head;
+        while (current != null) {
+            if (current.getString().toLowerCase().equals(string.toLowerCase())) {
+                if (current.getPrev() != null) {
+                    current.getPrev().setNext(current.getNext());
+                } else {
+                    head = current.getNext();
+                }
+                if (current.getNext() != null) {
+                    current.getNext().setPrev(current.getPrev());
+                }
+                return true;
+            }
+            current = current.getNext();
+        }
         return false;
     }
 
     @Override
     public void orderAscending() {
+        if (isAscending) {
+            return;
+        }
+        isAscending = true;
+        Node current = head;
+        while (current.getNext() != null) {
+            current = current.getNext();
+        }
+        head = current;
+        while (current != null) {
+            Node prevNode = current.getPrev();
+            Node nextNode = current.getNext();
+            current.setNext(prevNode);
+            current.setPrev(nextNode);
+            current = prevNode;
+        }
+
 
     }
 
     @Override
     public void orderDescending() {
+        if (!isAscending) {
+            return;
+        }
+        isAscending = false;
+        Node current = head;
+        while (current.getNext() != null) {
+            current = current.getNext();
+        }
+        head = current;
+        while (current != null) {
+            Node prevNode = current.getPrev();
+            Node nextNode = current.getNext();
+            current.setNext(prevNode);
+            current.setPrev(nextNode);
+            current = prevNode;
+        }
 
     }
 
@@ -149,59 +245,5 @@ public class SortedLinkedList implements SortedList {
     }
 
 
-//    private Node head;
-//
-//    SortedLinkedList() {
-//        head = null;
-//    }
-//
-//    void add(String name) {
-//        Node newNode = new Node(name);
-//        if (head == null) {
-//            head = newNode;
-//        } else if (head.getString().compareTo(name) > 0) {
-//            newNode.setNext(head);
-//            head.setPrev(newNode);
-//            head = newNode;
-//        } else {
-//            Node current = head;
-//            while (current.getNext() != null && current.getNext().getString().compareTo(name) < 0) {
-//                current = current.getNext();
-//            }
-//
-//            newNode.setNext(current.getNext());
-//            if (current.getNext() != null) {
-//                current.getNext().setPrev(newNode);
-//            }
-//            current.setNext(newNode);
-//            newNode.setPrev(current);
-//        }
-//    }
-//
-//    void remove(String name) {
-//        Node current = head;
-//        while (current != null) {
-//            if (current.getString().equals(name)) {
-//                if (current.getPrev() != null) {
-//                    current.getPrev().setNext(current.getNext());
-//                } else {
-//                    head = current.getNext();
-//                }
-//                if (current.getNext() != null) {
-//                    current.getNext().setPrev(current.getPrev());
-//                }
-//                return;
-//            }
-//            current = current.getNext();
-//        }
-//    }
-//
-//    void print() {
-//        Node current = head;
-//        while (current != null) {
-//            System.out.println(current.getString());
-//            current = current.getNext();
-//        }
-//    }
 
 }
