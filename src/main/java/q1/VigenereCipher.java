@@ -49,10 +49,11 @@ public class VigenereCipher implements Cipher {
                 int rowIndex = Character.toUpperCase(key.charAt(keyIndex % key.length())) - 'A';
                 int colIndex = Character.toUpperCase(c) - 'A';
                 encryptedMessage.append(VIGENERE_SQUARE[rowIndex][colIndex]);
-                keyIndex++;
+
             } else {
                 encryptedMessage.append(c);
             }
+            keyIndex++;
         }
         return encryptedMessage.toString();
     }
@@ -92,10 +93,10 @@ public class VigenereCipher implements Cipher {
                     colIndex++;
                 }
                 decryptedMessage.append((char) (colIndex + 'A'));
-                keyIndex++;
             } else {
                 decryptedMessage.append(c);
             }
+            keyIndex++;
         }
         return decryptedMessage.toString();
     }

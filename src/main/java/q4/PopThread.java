@@ -76,6 +76,11 @@ public class PopThread implements Runnable {
                 if (fileLabel != null) {
                     synchronized (lock) {
                         int count = Integer.parseInt(fileLabel.split("/")[0]);
+                        int max = Integer.parseInt(fileLabel.split("/")[1]);
+                        if (fileCounter.get() > max) {
+                            lock.notifyAll(); // Notify waiting threads
+                            break;
+                        }
                         while (fileCounter.get() != count) {
                             lock.wait(); // Wait for the file to be processed
                         }
@@ -89,7 +94,9 @@ public class PopThread implements Runnable {
                         }
                         writer.close();
                         fileCounter.incrementAndGet();
+
                         lock.notifyAll(); // Notify waiting threads
+
                     }
                 }
                 reader.close();

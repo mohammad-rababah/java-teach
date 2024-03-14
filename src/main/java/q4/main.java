@@ -8,27 +8,31 @@ public class main {
         // Example usage:
 
 
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("1831-06-01.txt");
-        arrayList.add("1961-04-12.txt");
+        ArrayList<String> filesOne = new ArrayList<String>();
+        filesOne.add("1831-06-01.txt");
+        filesOne.add("2003-08-27.txt");
 
-        PopThread thread1 = new PopThread(arrayList);
+        ArrayList<String> filesTwo = new ArrayList<String>();
+        filesTwo.add("1961-04-12.txt");
+        filesTwo.add("1972-12-11.txt");
 
-        ArrayList<String> arrayList2 = new ArrayList<>();
-        arrayList2.add("2003-08-27.txt");
+        int numAttempts = 3;
 
-        arrayList2.add("1972-12-11.txt");
+        for (int i = 0; i < numAttempts; i++) {
+            System.out.println("Run: " + (i + 1));
+            PopThread popRunnableOne = new PopThread(filesOne);
+            PopThread popRunnableTwo = new PopThread(filesTwo);
+            Thread threadOne = new Thread(popRunnableOne);
+            Thread threadTwo = new Thread(popRunnableTwo);
+            threadOne.start();
+            threadTwo.start();
+            try {
+                threadOne.join();
+                threadTwo.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
 
-        PopThread thread2 = new PopThread(arrayList2);
-
-
-        Thread t1 = new Thread(thread1);
-        Thread t2 = new Thread(thread2);
-
-
-        t1.start();
-        t2.start();
-
-
+            }
+        }
     }
 }
