@@ -1,10 +1,10 @@
 package q2;
 
 public class main {
+
     public static String redact(String content, String[] redactWords) {
         String[] words = content.split(" ");
         StringBuilder result = new StringBuilder();
-
         for (String word : words) {
             String normalizedWord = word.replaceAll("[^a-zA-Z]", "").toLowerCase(); // Remove non-alphabetic characters and convert to lowercase
             boolean redacted = false;

@@ -1,8 +1,13 @@
 package q1;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.nio.file.Paths;
+
 public class VigenereCipher implements Cipher {
     private static final int ALPHABET_LENGTH = 26;
     private static final char[][] VIGENERE_SQUARE = new char[ALPHABET_LENGTH][ALPHABET_LENGTH];
+    static final String filePath = "src/main/java/q1";
 
     static {
         for (int i = 0; i < ALPHABET_LENGTH; i++) {
@@ -13,7 +18,30 @@ public class VigenereCipher implements Cipher {
     }
 
     @Override
-    public String encrypt(String message, String key) {
+    public String encrypt(String message_filename, String
+            key_filename) {
+        String fullPath = "";
+        String currentDir = "";
+        String message = "";
+        String key = "";
+        try {
+            currentDir = System.getProperty("user.dir");
+            fullPath = Paths.get(currentDir, filePath, message_filename).toString();
+            BufferedReader reader = new BufferedReader(new FileReader(fullPath));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                message += line;
+            }
+            fullPath = Paths.get(currentDir, filePath, key_filename).toString();
+            reader = new BufferedReader(new FileReader(fullPath));
+
+            while ((line = reader.readLine()) != null) {
+                key += line;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         StringBuilder encryptedMessage = new StringBuilder();
         int keyIndex = 0;
         for (char c : message.toCharArray()) {
@@ -30,7 +58,30 @@ public class VigenereCipher implements Cipher {
     }
 
     @Override
-    public String decrypt(String message, String key) {
+    public String decrypt(String message_filename, String key_filename) {
+        String fullPath = "";
+        String currentDir = "";
+        String message = "";
+        String key = "";
+        try {
+            currentDir = System.getProperty("user.dir");
+            fullPath = Paths.get(currentDir, filePath, message_filename).toString();
+            BufferedReader reader = new BufferedReader(new FileReader(fullPath));
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                message += line;
+            }
+            fullPath = Paths.get(currentDir, filePath, key_filename).toString();
+            reader = new BufferedReader(new FileReader(fullPath));
+
+            while ((line = reader.readLine()) != null) {
+                key += line;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         StringBuilder decryptedMessage = new StringBuilder();
         int keyIndex = 0;
         for (char c : message.toCharArray()) {
