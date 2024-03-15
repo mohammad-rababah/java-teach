@@ -22,39 +22,42 @@ public class VigenereCipher implements Cipher {
             key_filename) {
         String fullPath = "";
         String currentDir = "";
-        String message = "";
-        String key = "";
+        StringBuilder message = new StringBuilder();
+        StringBuilder key = new StringBuilder();
         try {
             currentDir = System.getProperty("user.dir");
             fullPath = Paths.get(currentDir, filePath, message_filename).toString();
             BufferedReader reader = new BufferedReader(new FileReader(fullPath));
             String line;
             while ((line = reader.readLine()) != null) {
-                message += line;
+                message.append(line);
+                message.append("\n");
             }
+            message.deleteCharAt(message.length() - 1);
             fullPath = Paths.get(currentDir, filePath, key_filename).toString();
             reader = new BufferedReader(new FileReader(fullPath));
-
             while ((line = reader.readLine()) != null) {
-                key += line;
+                key.append(line);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            return "Error: reading file";
+
         }
 
         StringBuilder encryptedMessage = new StringBuilder();
         int keyIndex = 0;
-        for (char c : message.toCharArray()) {
+        for (char c : message.toString().toCharArray()) {
             if (Character.isLetter(c)) {
                 int rowIndex = Character.toUpperCase(key.charAt(keyIndex % key.length())) - 'A';
                 int colIndex = Character.toUpperCase(c) - 'A';
                 encryptedMessage.append(VIGENERE_SQUARE[rowIndex][colIndex]);
-
             } else {
                 encryptedMessage.append(c);
             }
             keyIndex++;
         }
+
+
         return encryptedMessage.toString();
     }
 
@@ -62,8 +65,8 @@ public class VigenereCipher implements Cipher {
     public String decrypt(String message_filename, String key_filename) {
         String fullPath = "";
         String currentDir = "";
-        String message = "";
-        String key = "";
+        StringBuilder message = new StringBuilder();
+        StringBuilder key = new StringBuilder();
         try {
             currentDir = System.getProperty("user.dir");
             fullPath = Paths.get(currentDir, filePath, message_filename).toString();
@@ -71,21 +74,23 @@ public class VigenereCipher implements Cipher {
 
             String line;
             while ((line = reader.readLine()) != null) {
-                message += line;
+                message.append(line);
+                message.append("\n");
             }
+            message.deleteCharAt(message.length() - 1);
             fullPath = Paths.get(currentDir, filePath, key_filename).toString();
             reader = new BufferedReader(new FileReader(fullPath));
 
             while ((line = reader.readLine()) != null) {
-                key += line;
+                key.append(line);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            return "Error: reading file";
         }
 
         StringBuilder decryptedMessage = new StringBuilder();
         int keyIndex = 0;
-        for (char c : message.toCharArray()) {
+        for (char c : message.toString().toCharArray()) {
             if (Character.isLetter(c)) {
                 int rowIndex = Character.toUpperCase(key.charAt(keyIndex % key.length())) - 'A';
                 int colIndex = 0;
@@ -94,6 +99,7 @@ public class VigenereCipher implements Cipher {
                 }
                 decryptedMessage.append((char) (colIndex + 'A'));
             } else {
+
                 decryptedMessage.append(c);
             }
             keyIndex++;

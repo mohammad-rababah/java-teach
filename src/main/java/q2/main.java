@@ -6,7 +6,7 @@ public class main {
         String[] words = content.split(" ");
         StringBuilder result = new StringBuilder();
         for (String word : words) {
-            String normalizedWord = word.replaceAll("[^a-zA-Z]", "").toLowerCase(); // Remove non-alphabetic characters and convert to lowercase
+            String normalizedWord = word.replaceAll("[^a-zA-Z\\d]", "").toLowerCase(); // Remove non-alphabetic characters and convert to lowercase
             boolean redacted = false;
 
             for (String redactWord : redactWords) {
@@ -27,15 +27,21 @@ public class main {
 
         return result.toString().trim(); // Remove trailing space and return the result
     }
+
     private static String redactWord(String word) {
         StringBuilder redactedWord = new StringBuilder();
         for (int i = 0; i < word.length(); i++) {
-            redactedWord.append('*'); // Replace each character with '*'
+            if (Character.isLetter(word.charAt(i))) {
+                redactedWord.append('*'); // Replace each character with '*'
+            } else {
+                redactedWord.append(word.charAt(i)); // Keep non-alphabetic characters
+            }
         }
         return redactedWord.toString();
     }
+
     public static void main(String[] args) {
-        String content = "The quick brown fox jumps over the lazy dog!";
+        String content = "The quick brown fox jumps over the lazy dog.";
         String[] redactWords = {"Fox", "jumps", "dog"};
 
         String redactedContent = redact(content, redactWords);

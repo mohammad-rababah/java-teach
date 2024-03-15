@@ -3,6 +3,7 @@ package org.example;
 public class SortedLinkedList implements SortedList {
     private Node head;
     private boolean isAscending = true;
+
     SortedLinkedList() {
         head = null;
     }
@@ -35,7 +36,11 @@ public class SortedLinkedList implements SortedList {
         String nodeName = node.getString().toLowerCase();
         if (head == null) {
             head = node;
-        } else if (head.getString().toLowerCase().compareTo(nodeName) > 0) {
+        } else if (head.getString().toLowerCase().compareTo(nodeName) > 0 && isAscending) {
+            node.setNext(head);
+            head.setPrev(node);
+            head = node;
+        } else if (head.getString().toLowerCase().compareTo(nodeName) < 0 && !isAscending) {
             node.setNext(head);
             head.setPrev(node);
             head = node;
@@ -43,9 +48,16 @@ public class SortedLinkedList implements SortedList {
             return;
         } else {
             Node current = head;
-            while (current.getNext() != null && current.getNext().getString().toLowerCase().compareTo(nodeName) < 0) {
-                current = current.getNext();
+            if (isAscending) {
+                while (current.getNext() != null && current.getNext().getString().toLowerCase().compareTo(nodeName) < 0) {
+                    current = current.getNext();
+                }
+            } else {
+                while (current.getNext() != null && current.getNext().getString().toLowerCase().compareTo(nodeName) > 0) {
+                    current = current.getNext();
+                }
             }
+
             if (current.getNext() != null && current.getNext().getString().toLowerCase().compareTo(nodeName) == 0) {
                 return;
             }
@@ -198,6 +210,9 @@ public class SortedLinkedList implements SortedList {
             return;
         }
         isAscending = true;
+        if (head == null) {
+            return;
+        }
         Node current = head;
         while (current.getNext() != null) {
             current = current.getNext();
@@ -219,7 +234,11 @@ public class SortedLinkedList implements SortedList {
         if (!isAscending) {
             return;
         }
+
         isAscending = false;
+        if (head == null) {
+            return;
+        }
         Node current = head;
         while (current.getNext() != null) {
             current = current.getNext();
@@ -243,7 +262,6 @@ public class SortedLinkedList implements SortedList {
             current = current.getNext();
         }
     }
-
 
 
 }

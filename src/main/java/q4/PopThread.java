@@ -35,7 +35,7 @@ public class PopThread implements Runnable {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            return;
         }
 
 
@@ -101,7 +101,9 @@ public class PopThread implements Runnable {
                 }
                 reader.close();
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
+            fileCounter.incrementAndGet();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }

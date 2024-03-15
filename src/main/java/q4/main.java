@@ -9,8 +9,9 @@ public class main {
 
 
         ArrayList<String> filesOne = new ArrayList<String>();
-        filesOne.add("1831-06-01.txt");
         filesOne.add("2003-08-27.txt");
+        filesOne.add("1831-06-01.txt");
+
 
         ArrayList<String> filesTwo = new ArrayList<String>();
         filesTwo.add("1961-04-12.txt");
