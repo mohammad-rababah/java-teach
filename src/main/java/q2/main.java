@@ -31,7 +31,7 @@ public class main {
     private static String redactWord(String word) {
         StringBuilder redactedWord = new StringBuilder();
         for (int i = 0; i < word.length(); i++) {
-            if (Character.isLetter(word.charAt(i))) {
+            if (Character.isLetter(word.charAt(i)) || Character.isDigit(word.charAt(i))) {
                 redactedWord.append('*'); // Replace each character with '*'
             } else {
                 redactedWord.append(word.charAt(i)); // Keep non-alphabetic characters
@@ -41,8 +41,8 @@ public class main {
     }
 
     public static void main(String[] args) {
-        String content = "The quick brown fox jumps over the lazy dog.";
-        String[] redactWords = {"Fox", "jumps", "dog"};
+        String content = "The quick brown fox jumps over the lazy d0g.";
+        String[] redactWords = {"Fox", "jumps", "d0g"};
 
         String redactedContent = redact(content, redactWords);
         System.out.println(redactedContent);
